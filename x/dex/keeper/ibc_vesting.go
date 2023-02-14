@@ -2,13 +2,15 @@ package keeper
 
 import (
 	"errors"
+	"strconv"
+
+	"vesting/x/dex/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/ibc-go/v6/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v6/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v6/modules/core/24-host"
-	"vesting/x/dex/types"
 )
 
 // TransmitIbcVestingPacket transmits the packet over IBC with the specified source port and source channel
@@ -42,6 +44,18 @@ func (k Keeper) OnRecvIbcVestingPacket(ctx sdk.Context, packet channeltypes.Pack
 
 	// TODO: packet reception logic
 
+	id := k.AppendVesting(
+		ctx,
+		types.Vesting{
+			Creator:  packet.SourcePort + "-" + packet.SourceChannel + "-" + data.Creator,
+			Start:    data.Start,
+			Duration: data.Duration,
+			Parts:    data.Parts,
+		},
+	)
+
+	packetAck.VestingID = strconv.FormatUint(id, 10)
+
 	return packetAck, nil
 }
 
@@ -66,6 +80,18 @@ func (k Keeper) OnAcknowledgementIbcVestingPacket(ctx sdk.Context, packet channe
 
 		// TODO: successful acknowledgement logic
 
+		k.AppendSentVesting(
+			ctx,
+			types.SentVesting{
+				Creator:   data.Creator,
+				VestingID: packetAck.VestingID,
+				Start:     data.Start,
+				Duration:  data.Duration,
+				Parts:     data.Parts,
+				Chain:     packet.DestinationPort + "-" + packet.DestinationChannel,
+			},
+		)
+
 		return nil
 	default:
 		// The counter-party module doesn't implement the correct acknowledgment format
@@ -77,6 +103,16 @@ func (k Keeper) OnAcknowledgementIbcVestingPacket(ctx sdk.Context, packet channe
 func (k Keeper) OnTimeoutIbcVestingPacket(ctx sdk.Context, packet channeltypes.Packet, data types.IbcVestingPacketData) error {
 
 	// TODO: packet timeout logic
+	k.AppendTimedoutVesting(
+		ctx,
+		types.TimedoutVesting{
+			Creator:  data.Creator,
+			Start:    data.Start,
+			Duration: data.Duration,
+			Parts:    data.Parts,
+			Chain:    packet.DestinationPort + "-" + packet.DestinationChannel,
+		},
+	)
 
 	return nil
 }

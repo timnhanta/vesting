@@ -18,6 +18,7 @@ message IbcVestingPacketData {
   string start    = 1;
   string duration = 2;
   string parts    = 3;
+  string creator  = 4;
 }
 
 // IbcVestingPacketAck defines a struct for the packet acknowledgment

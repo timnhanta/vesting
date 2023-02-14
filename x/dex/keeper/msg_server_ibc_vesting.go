@@ -3,9 +3,10 @@ package keeper
 import (
 	"context"
 
+	"vesting/x/dex/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	clienttypes "github.com/cosmos/ibc-go/v6/modules/core/02-client/types"
-	"vesting/x/dex/types"
 )
 
 func (k msgServer) SendIbcVesting(goCtx context.Context, msg *types.MsgSendIbcVesting) (*types.MsgSendIbcVestingResponse, error) {
@@ -19,6 +20,7 @@ func (k msgServer) SendIbcVesting(goCtx context.Context, msg *types.MsgSendIbcVe
 	packet.Start = msg.Start
 	packet.Duration = msg.Duration
 	packet.Parts = msg.Parts
+	packet.Creator = msg.Creator
 
 	// Transmit the packet
 	_, err := k.TransmitIbcVestingPacket(
