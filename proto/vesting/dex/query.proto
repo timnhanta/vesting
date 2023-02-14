@@ -1,26 +1,58 @@
 syntax = "proto3";
+
 package vesting.dex;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "vesting/dex/params.proto";
+import "vesting/dex/vesting.proto";
 
 option go_package = "vesting/x/dex/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/vesting/dex/params";
+  
+  }
+  
+  // Queries a list of Vesting items.
+  rpc Vesting    (QueryGetVestingRequest) returns (QueryGetVestingResponse) {
+    option (google.api.http).get = "/vesting/dex/vesting/{id}";
+  
+  }
+  rpc VestingAll (QueryAllVestingRequest) returns (QueryAllVestingResponse) {
+    option (google.api.http).get = "/vesting/dex/vesting";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetVestingRequest {
+  uint64 id = 1;
+}
+
+message QueryGetVestingResponse {
+  Vesting Vesting = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVestingRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVestingResponse {
+  repeated Vesting                                Vesting    = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
