@@ -38,3 +38,8 @@ const (
 	SentVestingKey      = "SentVesting/value/"
 	SentVestingCountKey = "SentVesting/count/"
 )
+
+const (
+	TimedoutVestingKey      = "TimedoutVesting/value/"
+	TimedoutVestingCountKey = "TimedoutVesting/count/"
+)

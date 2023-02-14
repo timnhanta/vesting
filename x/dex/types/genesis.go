@@ -11,9 +11,10 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		PortId:          PortID,
-		VestingList:     []Vesting{},
-		SentVestingList: []SentVesting{},
+		PortId:              PortID,
+		VestingList:         []Vesting{},
+		SentVestingList:     []SentVesting{},
+		TimedoutVestingList: []TimedoutVesting{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -48,6 +49,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("sentVesting id should be lower or equal than the last id")
 		}
 		sentVestingIdMap[elem.Id] = true
+	}
+	// Check for duplicated ID in timedoutVesting
+	timedoutVestingIdMap := make(map[uint64]bool)
+	timedoutVestingCount := gs.GetTimedoutVestingCount()
+	for _, elem := range gs.TimedoutVestingList {
+		if _, ok := timedoutVestingIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for timedoutVesting")
+		}
+		if elem.Id >= timedoutVestingCount {
+			return fmt.Errorf("timedoutVesting id should be lower or equal than the last id")
+		}
+		timedoutVestingIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

@@ -8,6 +8,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "vesting/dex/params.proto";
 import "vesting/dex/vesting.proto";
 import "vesting/dex/sent_vesting.proto";
+import "vesting/dex/timedout_vesting.proto";
 
 option go_package = "vesting/x/dex/types";
 
@@ -37,6 +38,16 @@ service Query {
   }
   rpc SentVestingAll (QueryAllSentVestingRequest) returns (QueryAllSentVestingResponse) {
     option (google.api.http).get = "/vesting/dex/sent_vesting";
+  
+  }
+  
+  // Queries a list of TimedoutVesting items.
+  rpc TimedoutVesting    (QueryGetTimedoutVestingRequest) returns (QueryGetTimedoutVestingResponse) {
+    option (google.api.http).get = "/vesting/dex/timedout_vesting/{id}";
+  
+  }
+  rpc TimedoutVestingAll (QueryAllTimedoutVestingRequest) returns (QueryAllTimedoutVestingResponse) {
+    option (google.api.http).get = "/vesting/dex/timedout_vesting";
   
   }
 }
@@ -82,5 +93,22 @@ message QueryAllSentVestingRequest {
 message QueryAllSentVestingResponse {
   repeated SentVesting                            SentVesting = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+
+message QueryGetTimedoutVestingRequest {
+  uint64 id = 1;
+}
+
+message QueryGetTimedoutVestingResponse {
+  TimedoutVesting TimedoutVesting = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllTimedoutVestingRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTimedoutVestingResponse {
+  repeated TimedoutVesting                        TimedoutVesting = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination      = 2;
 }
 

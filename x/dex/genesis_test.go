@@ -32,6 +32,15 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		SentVestingCount: 2,
+		TimedoutVestingList: []types.TimedoutVesting{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		TimedoutVestingCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -49,5 +58,7 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.VestingCount, got.VestingCount)
 	require.ElementsMatch(t, genesisState.SentVestingList, got.SentVestingList)
 	require.Equal(t, genesisState.SentVestingCount, got.SentVestingCount)
+	require.ElementsMatch(t, genesisState.TimedoutVestingList, got.TimedoutVestingList)
+	require.Equal(t, genesisState.TimedoutVestingCount, got.TimedoutVestingCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

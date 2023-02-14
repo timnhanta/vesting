@@ -40,6 +40,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				SentVestingCount: 2,
+				TimedoutVestingList: []types.TimedoutVesting{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				TimedoutVestingCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -93,6 +102,32 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				SentVestingCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated timedoutVesting",
+			genState: &types.GenesisState{
+				TimedoutVestingList: []types.TimedoutVesting{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid timedoutVesting count",
+			genState: &types.GenesisState{
+				TimedoutVestingList: []types.TimedoutVesting{
+					{
+						Id: 1,
+					},
+				},
+				TimedoutVestingCount: 0,
 			},
 			valid: false,
 		},
