@@ -15,6 +15,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 	// Set vesting count
 	k.SetVestingCount(ctx, genState.VestingCount)
+	// Set all the sentVesting
+	for _, elem := range genState.SentVestingList {
+		k.SetSentVesting(ctx, elem)
+	}
+
+	// Set sentVesting count
+	k.SetSentVestingCount(ctx, genState.SentVestingCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -38,6 +45,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.PortId = k.GetPort(ctx)
 	genesis.VestingList = k.GetAllVesting(ctx)
 	genesis.VestingCount = k.GetVestingCount(ctx)
+	genesis.SentVestingList = k.GetAllSentVesting(ctx)
+	genesis.SentVestingCount = k.GetSentVestingCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

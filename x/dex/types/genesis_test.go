@@ -31,6 +31,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				VestingCount: 2,
+				SentVestingList: []types.SentVesting{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				SentVestingCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -58,6 +67,32 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				VestingCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated sentVesting",
+			genState: &types.GenesisState{
+				SentVestingList: []types.SentVesting{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid sentVesting count",
+			genState: &types.GenesisState{
+				SentVestingList: []types.SentVesting{
+					{
+						Id: 1,
+					},
+				},
+				SentVestingCount: 0,
 			},
 			valid: false,
 		},

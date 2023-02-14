@@ -33,3 +33,8 @@ const (
 	VestingKey      = "Vesting/value/"
 	VestingCountKey = "Vesting/count/"
 )
+
+const (
+	SentVestingKey      = "SentVesting/value/"
+	SentVestingCountKey = "SentVesting/count/"
+)

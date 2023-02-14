@@ -5,14 +5,17 @@ package vesting.dex;
 import "gogoproto/gogo.proto";
 import "vesting/dex/params.proto";
 import "vesting/dex/vesting.proto";
+import "vesting/dex/sent_vesting.proto";
 
 option go_package = "vesting/x/dex/types";
 
 // GenesisState defines the dex module's genesis state.
 message GenesisState {
-           Params  params       = 1 [(gogoproto.nullable) = false];
-           string  port_id      = 2;
-  repeated Vesting vestingList  = 3 [(gogoproto.nullable) = false];
-           uint64  vestingCount = 4;
+           Params      params           = 1 [(gogoproto.nullable) = false];
+           string      port_id          = 2;
+  repeated Vesting     vestingList      = 3 [(gogoproto.nullable) = false];
+           uint64      vestingCount     = 4;
+  repeated SentVesting sentVestingList  = 5 [(gogoproto.nullable) = false];
+           uint64      sentVestingCount = 6;
 }
 

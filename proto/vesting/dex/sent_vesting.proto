@@ -1,0 +1,15 @@
+syntax = "proto3";
+package vesting.dex;
+
+option go_package = "vesting/x/dex/types";
+
+message SentVesting {
+  uint64 id = 1;
+  string vestingID = 2; 
+  string start = 3; 
+  string duration = 4; 
+  string parts = 5; 
+  string chain = 6; 
+  string creator = 7; 
+  
+}
