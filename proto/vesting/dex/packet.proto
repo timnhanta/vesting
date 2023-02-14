@@ -1,13 +1,27 @@
 syntax = "proto3";
+
 package vesting.dex;
 
 option go_package = "vesting/x/dex/types";
 
 message DexPacketData {
-    oneof packet {
-        NoData noData = 1;
-    }
+  oneof packet {
+    NoData               noData           = 1;
+    IbcVestingPacketData ibcVestingPacket = 2;
+  }
 }
 
-message NoData {
+message NoData {}
+
+// IbcVestingPacketData defines a struct for the packet payload
+message IbcVestingPacketData {
+  string start    = 1;
+  string duration = 2;
+  string parts    = 3;
 }
+
+// IbcVestingPacketAck defines a struct for the packet acknowledgment
+message IbcVestingPacketAck {
+  string vestingID = 1;
+}
+

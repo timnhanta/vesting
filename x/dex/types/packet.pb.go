@@ -25,6 +25,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type DexPacketData struct {
 	// Types that are valid to be assigned to Packet:
 	//	*DexPacketData_NoData
+	//	*DexPacketData_IbcVestingPacket
 	Packet isDexPacketData_Packet `protobuf_oneof:"packet"`
 }
 
@@ -70,8 +71,12 @@ type isDexPacketData_Packet interface {
 type DexPacketData_NoData struct {
 	NoData *NoData `protobuf:"bytes,1,opt,name=noData,proto3,oneof" json:"noData,omitempty"`
 }
+type DexPacketData_IbcVestingPacket struct {
+	IbcVestingPacket *IbcVestingPacketData `protobuf:"bytes,2,opt,name=ibcVestingPacket,proto3,oneof" json:"ibcVestingPacket,omitempty"`
+}
 
-func (*DexPacketData_NoData) isDexPacketData_Packet() {}
+func (*DexPacketData_NoData) isDexPacketData_Packet()           {}
+func (*DexPacketData_IbcVestingPacket) isDexPacketData_Packet() {}
 
 func (m *DexPacketData) GetPacket() isDexPacketData_Packet {
 	if m != nil {
@@ -87,10 +92,18 @@ func (m *DexPacketData) GetNoData() *NoData {
 	return nil
 }
 
+func (m *DexPacketData) GetIbcVestingPacket() *IbcVestingPacketData {
+	if x, ok := m.GetPacket().(*DexPacketData_IbcVestingPacket); ok {
+		return x.IbcVestingPacket
+	}
+	return nil
+}
+
 // XXX_OneofWrappers is for the internal use of the proto package.
 func (*DexPacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*DexPacketData_NoData)(nil),
+		(*DexPacketData_IbcVestingPacket)(nil),
 	}
 }
 
@@ -130,25 +143,140 @@ func (m *NoData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_NoData proto.InternalMessageInfo
 
+// IbcVestingPacketData defines a struct for the packet payload
+type IbcVestingPacketData struct {
+	Start    string `protobuf:"bytes,1,opt,name=start,proto3" json:"start,omitempty"`
+	Duration string `protobuf:"bytes,2,opt,name=duration,proto3" json:"duration,omitempty"`
+	Parts    string `protobuf:"bytes,3,opt,name=parts,proto3" json:"parts,omitempty"`
+}
+
+func (m *IbcVestingPacketData) Reset()         { *m = IbcVestingPacketData{} }
+func (m *IbcVestingPacketData) String() string { return proto.CompactTextString(m) }
+func (*IbcVestingPacketData) ProtoMessage()    {}
+func (*IbcVestingPacketData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_844356b792ceb569, []int{2}
+}
+func (m *IbcVestingPacketData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *IbcVestingPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_IbcVestingPacketData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *IbcVestingPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IbcVestingPacketData.Merge(m, src)
+}
+func (m *IbcVestingPacketData) XXX_Size() int {
+	return m.Size()
+}
+func (m *IbcVestingPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_IbcVestingPacketData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_IbcVestingPacketData proto.InternalMessageInfo
+
+func (m *IbcVestingPacketData) GetStart() string {
+	if m != nil {
+		return m.Start
+	}
+	return ""
+}
+
+func (m *IbcVestingPacketData) GetDuration() string {
+	if m != nil {
+		return m.Duration
+	}
+	return ""
+}
+
+func (m *IbcVestingPacketData) GetParts() string {
+	if m != nil {
+		return m.Parts
+	}
+	return ""
+}
+
+// IbcVestingPacketAck defines a struct for the packet acknowledgment
+type IbcVestingPacketAck struct {
+	VestingID string `protobuf:"bytes,1,opt,name=vestingID,proto3" json:"vestingID,omitempty"`
+}
+
+func (m *IbcVestingPacketAck) Reset()         { *m = IbcVestingPacketAck{} }
+func (m *IbcVestingPacketAck) String() string { return proto.CompactTextString(m) }
+func (*IbcVestingPacketAck) ProtoMessage()    {}
+func (*IbcVestingPacketAck) Descriptor() ([]byte, []int) {
+	return fileDescriptor_844356b792ceb569, []int{3}
+}
+func (m *IbcVestingPacketAck) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *IbcVestingPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_IbcVestingPacketAck.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *IbcVestingPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IbcVestingPacketAck.Merge(m, src)
+}
+func (m *IbcVestingPacketAck) XXX_Size() int {
+	return m.Size()
+}
+func (m *IbcVestingPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_IbcVestingPacketAck.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_IbcVestingPacketAck proto.InternalMessageInfo
+
+func (m *IbcVestingPacketAck) GetVestingID() string {
+	if m != nil {
+		return m.VestingID
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*DexPacketData)(nil), "vesting.dex.DexPacketData")
 	proto.RegisterType((*NoData)(nil), "vesting.dex.NoData")
+	proto.RegisterType((*IbcVestingPacketData)(nil), "vesting.dex.IbcVestingPacketData")
+	proto.RegisterType((*IbcVestingPacketAck)(nil), "vesting.dex.IbcVestingPacketAck")
 }
 
 func init() { proto.RegisterFile("vesting/dex/packet.proto", fileDescriptor_844356b792ceb569) }
 
 var fileDescriptor_844356b792ceb569 = []byte{
-	// 157 bytes of a gzipped FileDescriptorProto
+	// 259 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x28, 0x4b, 0x2d, 0x2e,
 	0xc9, 0xcc, 0x4b, 0xd7, 0x4f, 0x49, 0xad, 0xd0, 0x2f, 0x48, 0x4c, 0xce, 0x4e, 0x2d, 0xd1, 0x2b,
-	0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x86, 0xca, 0xe8, 0xa5, 0xa4, 0x56, 0x28, 0x79, 0x70, 0xf1,
-	0xba, 0xa4, 0x56, 0x04, 0x80, 0xe5, 0x5d, 0x12, 0x4b, 0x12, 0x85, 0x74, 0xb9, 0xd8, 0xf2, 0xf2,
-	0x41, 0x2c, 0x09, 0x46, 0x05, 0x46, 0x0d, 0x6e, 0x23, 0x61, 0x3d, 0x24, 0xe5, 0x7a, 0x7e, 0x60,
-	0x29, 0x0f, 0x86, 0x20, 0xa8, 0x22, 0x27, 0x0e, 0x2e, 0x36, 0x88, 0xe1, 0x4a, 0x1c, 0x5c, 0x6c,
-	0x10, 0x59, 0x27, 0xdd, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e,
-	0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96, 0x63, 0x88, 0x12, 0x86,
-	0x39, 0xaa, 0x02, 0xec, 0xac, 0x92, 0xca, 0x82, 0xd4, 0xe2, 0x24, 0x36, 0xb0, 0xb3, 0x8c, 0x01,
-	0x01, 0x00, 0x00, 0xff, 0xff, 0x85, 0x45, 0x8f, 0x4a, 0xb2, 0x00, 0x00, 0x00,
+	0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x86, 0xca, 0xe8, 0xa5, 0xa4, 0x56, 0x28, 0xcd, 0x64, 0xe4,
+	0xe2, 0x75, 0x49, 0xad, 0x08, 0x00, 0x2b, 0x70, 0x49, 0x2c, 0x49, 0x14, 0xd2, 0xe5, 0x62, 0xcb,
+	0xcb, 0x07, 0xb1, 0x24, 0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0x84, 0xf5, 0x90, 0xd4, 0xeb, 0xf9,
+	0x81, 0xa5, 0x3c, 0x18, 0x82, 0xa0, 0x8a, 0x84, 0xfc, 0xb9, 0x04, 0x32, 0x93, 0x92, 0xc3, 0x20,
+	0x4a, 0x20, 0xc6, 0x48, 0x30, 0x81, 0x35, 0x2a, 0xa2, 0x68, 0xf4, 0x44, 0x53, 0x04, 0x35, 0x06,
+	0x43, 0xb3, 0x13, 0x07, 0x17, 0x1b, 0xc4, 0xb9, 0x4a, 0x1c, 0x5c, 0x6c, 0x10, 0xeb, 0x94, 0xe2,
+	0xb8, 0x44, 0xb0, 0xe9, 0x17, 0x12, 0xe1, 0x62, 0x2d, 0x2e, 0x49, 0x2c, 0x2a, 0x01, 0x3b, 0x95,
+	0x33, 0x08, 0xc2, 0x11, 0x92, 0xe2, 0xe2, 0x48, 0x29, 0x2d, 0x4a, 0x2c, 0xc9, 0xcc, 0xcf, 0x03,
+	0x3b, 0x85, 0x33, 0x08, 0xce, 0x07, 0xe9, 0x28, 0x48, 0x2c, 0x2a, 0x29, 0x96, 0x60, 0x86, 0xe8,
+	0x00, 0x73, 0x94, 0x8c, 0xb9, 0x84, 0xd1, 0xcd, 0x77, 0x4c, 0xce, 0x16, 0x92, 0xe1, 0xe2, 0x84,
+	0x7a, 0xc1, 0xd3, 0x05, 0x6a, 0x05, 0x42, 0xc0, 0x49, 0xf7, 0xc4, 0x23, 0x39, 0xc6, 0x0b, 0x8f,
+	0xe4, 0x18, 0x1f, 0x3c, 0x92, 0x63, 0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b,
+	0x8f, 0xe5, 0x18, 0xa2, 0x84, 0x61, 0x61, 0x5f, 0x01, 0x0e, 0xfd, 0x92, 0xca, 0x82, 0xd4, 0xe2,
+	0x24, 0x36, 0x70, 0xe8, 0x1b, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x69, 0x6c, 0x65, 0xa7, 0x99,
+	0x01, 0x00, 0x00,
 }
 
 func (m *DexPacketData) Marshal() (dAtA []byte, err error) {
@@ -204,6 +332,27 @@ func (m *DexPacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	}
 	return len(dAtA) - i, nil
 }
+func (m *DexPacketData_IbcVestingPacket) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DexPacketData_IbcVestingPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.IbcVestingPacket != nil {
+		{
+			size, err := m.IbcVestingPacket.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintPacket(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	return len(dAtA) - i, nil
+}
 func (m *NoData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -224,6 +373,80 @@ func (m *NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *IbcVestingPacketData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *IbcVestingPacketData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *IbcVestingPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Parts) > 0 {
+		i -= len(m.Parts)
+		copy(dAtA[i:], m.Parts)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Parts)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Duration) > 0 {
+		i -= len(m.Duration)
+		copy(dAtA[i:], m.Duration)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Duration)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Start) > 0 {
+		i -= len(m.Start)
+		copy(dAtA[i:], m.Start)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Start)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *IbcVestingPacketAck) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *IbcVestingPacketAck) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *IbcVestingPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.VestingID) > 0 {
+		i -= len(m.VestingID)
+		copy(dAtA[i:], m.VestingID)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.VestingID)))
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -262,12 +485,58 @@ func (m *DexPacketData_NoData) Size() (n int) {
 	}
 	return n
 }
+func (m *DexPacketData_IbcVestingPacket) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.IbcVestingPacket != nil {
+		l = m.IbcVestingPacket.Size()
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
 func (m *NoData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
+	return n
+}
+
+func (m *IbcVestingPacketData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Start)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Duration)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Parts)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	return n
+}
+
+func (m *IbcVestingPacketAck) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.VestingID)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
 	return n
 }
 
@@ -341,6 +610,41 @@ func (m *DexPacketData) Unmarshal(dAtA []byte) error {
 			}
 			m.Packet = &DexPacketData_NoData{v}
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IbcVestingPacket", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &IbcVestingPacketData{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Packet = &DexPacketData_IbcVestingPacket{v}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPacket(dAtA[iNdEx:])
@@ -391,6 +695,234 @@ func (m *NoData) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: NoData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *IbcVestingPacketData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: IbcVestingPacketData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: IbcVestingPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Start", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Start = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Duration", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Duration = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Parts", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Parts = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *IbcVestingPacketAck) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: IbcVestingPacketAck: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: IbcVestingPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VestingID", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.VestingID = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPacket(dAtA[iNdEx:])

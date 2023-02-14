@@ -1,7 +1,22 @@
 syntax = "proto3";
+
 package vesting.dex;
 
 option go_package = "vesting/x/dex/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc SendIbcVesting (MsgSendIbcVesting) returns (MsgSendIbcVestingResponse);
+}
+message MsgSendIbcVesting {
+  string start            = 5;
+  string duration         = 6;
+  string parts            = 7;
+  string creator          = 1;
+  string port             = 2;
+  string channelID        = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendIbcVestingResponse {}
+
