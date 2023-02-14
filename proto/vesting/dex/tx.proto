@@ -1,0 +1,7 @@
+syntax = "proto3";
+package vesting.dex;
+
+option go_package = "vesting/x/dex/types";
+
+// Msg defines the Msg service.
+service Msg {}
